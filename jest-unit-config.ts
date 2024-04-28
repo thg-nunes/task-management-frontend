@@ -1,3 +1,5 @@
-const config = require('./jest.config.js')
+import config from './jest.config'
+
+// @ts-ignore
 config.testMatch = ['**/*.spec.ts']
 module.exports = config
