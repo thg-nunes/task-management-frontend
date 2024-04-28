@@ -13,4 +13,16 @@ describe('<Button />', () => {
 
     expect(fakeAction).toHaveBeenCalled()
   })
+
+  test('should render loading if button type is submit', () => {
+    render(<Button isLoading={true} type="submit" />)
+
+    const button = screen.getByRole('button')
+
+    expect(button).toHaveProperty('type', 'submit')
+
+    fireEvent.click(button)
+
+    expect(screen.getByTestId('spinner')).toBeInTheDocument()
+  })
 })
