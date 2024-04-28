@@ -25,4 +25,24 @@ describe('<Button />', () => {
 
     expect(screen.getByTestId('spinner')).toBeInTheDocument()
   })
+
+  test('button should is enabled if not is loading', () => {
+    render(<Button />)
+
+    const button = screen.getByRole('button')
+
+    fireEvent.click(button)
+
+    expect(button).toHaveProperty('disabled', false)
+  })
+
+  test('should disble the button if is loading', () => {
+    render(<Button isLoading={true} type="submit" />)
+
+    const button = screen.getByRole('button')
+
+    fireEvent.click(button)
+
+    expect(button).toHaveProperty('disabled', true)
+  })
 })
