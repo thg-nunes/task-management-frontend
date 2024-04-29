@@ -1,20 +1,18 @@
 import { render, screen } from '@testing-library/react'
 
-import { Input } from '@components/input'
+import { InputContainer, InputElement, InputLabel } from '@components/input'
 
 describe('<Input />', () => {
-  it('should render label and input if input type is email', () => {
+  it('should render input with correct content when composite', () => {
     const placeholder = 'Email'
     const type = 'email'
     const labelText = 'Email'
     const labelHtmlForm = 'inputEmail'
     render(
-      <Input
-        placeholder={placeholder}
-        type={type}
-        labelText={labelText}
-        labelHtmlForm={labelHtmlForm}
-      />
+      <InputContainer>
+        <InputLabel htmlFor={labelHtmlForm} labelText={labelText} />
+        <InputElement id={labelHtmlForm} placeholder={placeholder} type={type} />
+      </InputContainer>
     )
 
     const input = screen.getByPlaceholderText(placeholder)
