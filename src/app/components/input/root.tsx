@@ -9,13 +9,7 @@ export const InputContainer = ({
   ...rest
 }: InputContainerProps): JSX.Element => {
   return (
-    <div
-      className={twMerge(
-        'relative w-max max-w-56 rounded-sm border border-transparent bg-zinc-800 text-white focus-within:border-zinc-200 hover:border-zinc-200',
-        className
-      )}
-      {...rest}
-    >
+    <div className={twMerge('grid grid-rows-2 text-white', className)} {...rest}>
       {children}
     </div>
   )
