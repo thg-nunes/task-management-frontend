@@ -23,4 +23,22 @@ describe('<Input />', () => {
     expect(label).toHaveAttribute('for', labelHtmlForm)
     expect(input).toHaveAttribute('id', labelHtmlForm)
   })
+
+  it('should render error message if input generate an error', () => {
+    const placeholder = 'Email'
+    const type = 'email'
+    const labelText = 'Email'
+    const labelHtmlForm = 'inputEmail'
+
+    render(
+      <InputContainer inputErrorMessage="Fake error message">
+        <InputLabel htmlFor={labelHtmlForm} labelText={labelText} />
+        <InputElement id={labelHtmlForm} placeholder={placeholder} type={type} />
+      </InputContainer>
+    )
+
+    const errorMessage = screen.getByText('Fake error message')
+
+    expect(errorMessage).toBeInTheDocument()
+  })
 })
