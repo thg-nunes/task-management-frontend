@@ -16,14 +16,15 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
  */
 export const Button = ({
   isLoading = false,
+  className,
   children,
   ...rest
 }: ButtonProps): JSX.Element => {
   return (
     <button
       className={twMerge(
-        'flex w-max items-center gap-3 rounded-md bg-violet-500 px-3 py-1 text-white transition-all duration-150 ease-linear hover:bg-violet-500/90 disabled:opacity-80 disabled:cursor-not-allowed',
-        rest.className
+        'flex items-center justify-center gap-3 h-max rounded-md bg-violet-500 px-3 py-2 text-white transition-all duration-150 ease-linear hover:bg-violet-500/90 disabled:opacity-80 disabled:cursor-not-allowed',
+        className
       )}
       disabled={isLoading}
       {...rest}
