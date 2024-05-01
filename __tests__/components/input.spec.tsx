@@ -41,4 +41,22 @@ describe('<Input />', () => {
 
     expect(errorMessage).toBeInTheDocument()
   })
+
+  it('should render red border if hasError property is true', () => {
+    const placeholder = 'Email'
+    const type = 'email'
+    const labelText = 'Email'
+    const labelHtmlForm = 'inputEmail'
+
+    render(
+      <InputContainer>
+        <InputLabel htmlFor={labelHtmlForm} labelText={labelText} />
+        <InputElement id={labelHtmlForm} placeholder={placeholder} type={type} hasError />
+      </InputContainer>
+    )
+
+    const errorMessage = screen.getByPlaceholderText(placeholder)
+
+    expect(errorMessage.className.includes('border-red-400')).toBe(true)
+  })
 })
