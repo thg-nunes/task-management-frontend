@@ -10,7 +10,8 @@
     "test": "jest --watch --silent --noStackTrace --runInBand",
     "test:verbose": "jest",
     "test:unit": "npm test -- -c jest-unit-config.ts",
-    "test:integration": "npm test -- -c jest-integration-config.ts"
+    "test:integration": "npm test -- -c jest-integration-config.ts",
+    "test:coverage": "npx jest --coverage"
   },
   "dependencies": {
     "@apollo/client": "^3.10.1",

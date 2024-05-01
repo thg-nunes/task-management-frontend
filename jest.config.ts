@@ -8,6 +8,7 @@ const createJestConfig = nextJest({
 const config: Config = {
   clearMocks: true,
   collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.ts', '!**/node_modules/**', '!src/gql/**'],
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
   moduleNameMapper: {
