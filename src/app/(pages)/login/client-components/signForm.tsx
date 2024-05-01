@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link'
 import { PiSignIn } from 'react-icons/pi'
 import { Controller } from 'react-hook-form'
 
@@ -20,7 +21,7 @@ export const SignInForm = (): JSX.Element => {
 
   return (
     <form
-      className="flex flex-col"
+      className="flex flex-col pb-40"
       onSubmit={handleSubmit(
         async ({ email, password }) =>
           await signInMutationFn({ variables: { signData: { email, password } } })
@@ -85,6 +86,12 @@ export const SignInForm = (): JSX.Element => {
         Sign
         <PiSignIn className="size-6" />
       </Button>
+      <Link
+        href="/cadastro"
+        className="mt-5 h-max rounded-md bg-zinc-500 p-3 text-center text-white transition-all duration-150 ease-linear hover:bg-zinc-500/90"
+      >
+        Criar conta
+      </Link>
     </form>
   )
 }
