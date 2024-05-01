@@ -1,8 +1,11 @@
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
+import { ToastContainer } from 'react-toastify'
 
 import { ApolloContextProvider } from '@providers/apollo-provider'
+
 import './globals.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 const inter = Poppins({ subsets: ['latin'], weight: ['400', '600', '700'] })
 
@@ -28,6 +31,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`${inter.className} bg-gray-900`}>
         <ApolloContextProvider>{children}</ApolloContextProvider>
+        <ToastContainer />
       </body>
     </html>
   )
