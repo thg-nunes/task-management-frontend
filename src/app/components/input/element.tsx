@@ -12,7 +12,7 @@ type InputElementProps = InputHTMLAttributes<HTMLInputElement> & {
  */
 const INPUT_STYLES = {
   default:
-    'bg-zinc-800 rounded-sm border border-transparent focus-within:border-zinc-200 hover:border-zinc-200 pl-2 py-1 outline-none placeholder:text-zinc-400',
+    'bg-zinc-800 rounded-sm border border-transparent focus-within:border-zinc-200 hover:border-zinc-200 pl-2 py-3 outline-none placeholder:text-zinc-400',
   error: 'bg-zinc-800 rounded-sm border border-red-400 pl-2 py-1 outline-none',
 }
 
