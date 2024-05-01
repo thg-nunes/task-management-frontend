@@ -5,6 +5,7 @@
 
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -20,6 +21,7 @@ import { toastify } from '@utils/toastify'
  * e uma veriável para indicar se a chamada está em loading)
  */
 const useHandleSignIn = () => {
+  const { push } = useRouter()
   /**
    * @namespace signinSchema - esse objeto contém a config responsável por validar os campos
    * do formulário de signin
@@ -37,8 +39,11 @@ const useHandleSignIn = () => {
   })
 
   const [signInMutationFn, { loading }] = useMutation(GQL_SIGNIN, {
+    onCompleted() {
+      push('/home')
+    },
     onError(error) {
-      toastify(error.message, {
+      return toastify(error.message, {
         type: 'error',
       })
     },
