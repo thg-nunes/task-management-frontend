@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 
+import { ApolloContextProvider } from '@providers/apollo-provider'
 import './globals.css'
 
 const inter = Poppins({ subsets: ['latin'], weight: ['400', '600', '700'] })
@@ -25,7 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.className} bg-gray-900`}>{children}</body>
+      <body className={`${inter.className} bg-gray-900`}>
+        <ApolloContextProvider>{children}</ApolloContextProvider>
+      </body>
     </html>
   )
 }
