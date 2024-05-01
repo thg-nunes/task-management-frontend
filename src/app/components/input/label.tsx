@@ -11,7 +11,7 @@ export const InputLabel = ({
   ...rest
 }: InputLabelProps): JSX.Element => {
   return (
-    <label className={twMerge('my-1', className)} {...rest}>
+    <label className={twMerge('h-max w-max', className)} {...rest}>
       {labelText}
     </label>
   )
