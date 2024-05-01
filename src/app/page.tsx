@@ -1,3 +1,5 @@
-export default function Home() {
-  return <main>App</main>
+import { redirect } from 'next/navigation'
+
+export default function Index() {
+  redirect('/login')
 }
