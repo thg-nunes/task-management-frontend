@@ -13,12 +13,38 @@ import { GQL_SIGNUP } from '@gql/mutations/user'
 import { toastify } from '@utils/toastify'
 
 /**
- * @function useHandleSignUp - hook responsável por encapsular toda a config
- * necessária para o user criar uma conta no sistema
- * @returns {Object} -
+ * @function useHandleSignUp - hook responsável por configurar a mutation de signUp
+ * @returns {Object} - o objeto de retorno contém a função responsável por fazer
+ * a chamada ao apollo server e uma veriável para indicar se a chamada está em loading
  */
 const useHandleSignUp = () => {
   const { push } = useRouter()
+
+  const [signUpMutationFn, { data, loading }] = useMutation<{
+    id: string
+    username: string
+    email: string
+  }>(GQL_SIGNUP, {
+    onCompleted() {
+      push('/home')
+    },
+    onError(error) {
+      return toastify(error.message, {
+        type: 'error',
+      })
+    },
+  })
+
+  return { signUpMutationFn, loading }
+}
+
+/**
+ * @function useConfigForm - hook responsável por configurar tudo que é necessário
+ * para validar os campos do formulário de sign
+ * @returns {Object} - o objeto de retorno contém as funções e variáveis necessárias
+ * para a manipulação e validação dos campos do formulário de sign
+ */
+const useConfigSignUpForm = () => {
   /**
    * @namespace signUpSchema - esse objeto contém a config responsável por validar os campos
    * do formulário de signUp
@@ -47,21 +73,6 @@ const useHandleSignUp = () => {
       }),
   })
 
-  const [signUpMutationFn, { data, loading }] = useMutation<{
-    id: string
-    username: string
-    email: string
-  }>(GQL_SIGNUP, {
-    onCompleted() {
-      push('/home')
-    },
-    onError(error) {
-      return toastify(error.message, {
-        type: 'error',
-      })
-    },
-  })
-
   const { handleSubmit, control } = useForm({
     resolver: yupResolver(signUpSchema),
     defaultValues: {
@@ -72,10 +83,7 @@ const useHandleSignUp = () => {
     },
   })
 
-  return {
-    mutation: { signUpMutationFn, loading },
-    form: { handleSubmit, control },
-  }
+  return { handleSubmit, control }
 }
 
-export { useHandleSignUp }
+export { useHandleSignUp, useConfigSignUpForm }

@@ -2,7 +2,7 @@
 import { PiSignIn } from 'react-icons/pi'
 import { Controller } from 'react-hook-form'
 
-import { useHandleSignUp } from '@hooks/pages/cadastro'
+import { useConfigSignUpForm, useHandleSignUp } from '@hooks/pages/cadastro'
 
 import { Button } from '@components/button'
 import { InputContainer, InputElement, InputLabel } from '@components/input'
@@ -13,10 +13,8 @@ import { InputContainer, InputElement, InputLabel } from '@components/input'
  * de hooks do apollo-client e validação dos campos do formulário.
  */
 export const SignUpForm = (): JSX.Element => {
-  const {
-    form: { control, handleSubmit },
-    mutation: { loading, signUpMutationFn },
-  } = useHandleSignUp()
+  const { loading, signUpMutationFn } = useHandleSignUp()
+  const { control, handleSubmit } = useConfigSignUpForm()
 
   return (
     <form
