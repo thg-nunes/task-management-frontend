@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
-import { FcSerialTasks } from 'react-icons/fc'
 
+import { Logo } from '@components/logo'
 import { SignInForm } from './client-components/signForm'
 
 export const metadata: Metadata = {
@@ -15,10 +15,7 @@ export default function Login() {
   return (
     <main className="h-svh overflow-y-scroll px-6">
       <div className="grid h-full grid-rows-5">
-        <div className="mx-auto flex w-max items-center gap-3">
-          <FcSerialTasks className="size-12" />
-          <p className="text-xl">TaskMgm</p>
-        </div>
+        <Logo />
 
         <div className="row-span-3 mx-auto h-max w-full space-y-6">
           <Image
