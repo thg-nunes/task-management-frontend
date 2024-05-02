@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { PiSignIn } from 'react-icons/pi'
 import { Controller } from 'react-hook-form'
 
-import { useHandleSignIn } from '@hooks/pages/login'
+import { useConfigForm, useHandleSignIn } from '@hooks/pages/login'
 
 import { Button } from '@components/button'
 import { InputContainer, InputElement, InputLabel } from '@components/input'
@@ -15,18 +15,20 @@ import { InputContainer, InputElement, InputLabel } from '@components/input'
  */
 export const SignInForm = (): JSX.Element => {
   const {
-    form: { control, handleSubmit },
     mutation: { loading, signInMutationFn },
   } = useHandleSignIn()
+  const {
+    form: { control, handleSubmit },
+  } = useConfigForm()
+
+  async function handleSubmitForm() {
+    handleSubmit(async ({ email, password }) => {
+      await signInMutationFn({ variables: { signData: { email, password } } })
+    })
+  }
 
   return (
-    <form
-      className="flex flex-col pb-40"
-      onSubmit={handleSubmit(
-        async ({ email, password }) =>
-          await signInMutationFn({ variables: { signData: { email, password } } })
-      )}
-    >
+    <form className="flex flex-col pb-40" onSubmit={handleSubmitForm}>
       <Controller
         name="email"
         control={control}
