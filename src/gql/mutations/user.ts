@@ -15,3 +15,21 @@ export const GQL_SIGNIN = gql`
     refresh_token
   }
 `
+
+/**
+ * @namespace GQL_SIGNUP - mutation usada para fazer cadastro de
+ * usuário no server
+ */
+export const GQL_SIGNUP = gql`
+  mutation create_account($userData: CreateUserInput!) {
+    createUser(userData: $userData) {
+      ...userCreated
+    }
+  }
+
+  fragment userCreated on User {
+    id
+    username
+    email
+  }
+`
