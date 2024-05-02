@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { PiSignIn } from 'react-icons/pi'
 import { Controller } from 'react-hook-form'
 
-import { useConfigForm, useHandleSignIn } from '@hooks/pages/login'
+import { useConfigSignForm, useHandleSignIn } from '@hooks/pages/login'
 
 import { Button } from '@components/button'
 import { InputContainer, InputElement, InputLabel } from '@components/input'
@@ -14,12 +14,8 @@ import { InputContainer, InputElement, InputLabel } from '@components/input'
  * apollo-client e validação dos campos do formulário.
  */
 export const SignInForm = (): JSX.Element => {
-  const {
-    mutation: { loading, signInMutationFn },
-  } = useHandleSignIn()
-  const {
-    form: { control, handleSubmit },
-  } = useConfigForm()
+  const { loading, signInMutationFn } = useHandleSignIn()
+  const { control, handleSubmit } = useConfigSignForm()
 
   async function handleSubmitForm() {
     handleSubmit(async ({ email, password }) => {

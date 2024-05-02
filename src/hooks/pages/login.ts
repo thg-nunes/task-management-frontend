@@ -6,7 +6,7 @@
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
-import { MutationFunctionOptions, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { GQL_SIGNIN } from '@gql/mutations/user'
@@ -14,9 +14,8 @@ import { toastify } from '@utils/toastify'
 
 /**
  * @function useHandleSignIn - hook responsável por configurar a mutation de sign
- * @returns {Object} - o objeto de retorno contém a key chamada mutation: essa contém
- * a função responsável por fazer a chamada ao apollo server e uma veriável para
- * indicar se a chamada está em loading
+ * @returns {Object} - o objeto de retorno contém a função responsável por fazer
+ * a chamada ao apollo server e uma veriável para indicar se a chamada está em loading
  */
 const useHandleSignIn = () => {
   const { push } = useRouter()
@@ -32,16 +31,16 @@ const useHandleSignIn = () => {
     },
   })
 
-  return { mutation: { signInMutationFn, loading } }
+  return { signInMutationFn, loading }
 }
 
 /**
  * @function useConfigForm - hook responsável por configurar tudo que é necessário
  * para validar os campos do formulário de sign
- * @returns {Object} - o objeto de retorno contém a key form: essa contém as funções e
- * variáveis necessárias para a manipulação e validação dos campos do formulário
+ * @returns {Object} - o objeto de retorno contém as funções e variáveis necessárias
+ * para a manipulação e validação dos campos do formulário de sign
  */
-const useConfigForm = () => {
+const useConfigSignForm = () => {
   /**
    * @namespace signinSchema - esse objeto contém a config responsável por validar os campos
    * do formulário de signin
@@ -66,7 +65,7 @@ const useConfigForm = () => {
     },
   })
 
-  return { form: { handleSubmit, control } }
+  return { handleSubmit, control }
 }
 
-export { useHandleSignIn, useConfigForm }
+export { useHandleSignIn, useConfigSignForm }
