@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 }
 
 export default function Login() {
-  // APLICAR RESPONSIVIDADE
   return (
     <main className="h-svh overflow-y-scroll px-6 lg:px-0">
       <div className="grid h-full grid-rows-5 lg:grid-cols-2 lg:grid-rows-6">
