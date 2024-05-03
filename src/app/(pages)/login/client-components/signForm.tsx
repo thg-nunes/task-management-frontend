@@ -17,14 +17,13 @@ export const SignInForm = (): JSX.Element => {
   const { loading, signInMutationFn } = useHandleSignIn()
   const { control, handleSubmit } = useConfigSignForm()
 
-  async function handleSubmitForm() {
-    handleSubmit(async ({ email, password }) => {
-      await signInMutationFn({ variables: { signData: { email, password } } })
-    })
-  }
-
   return (
-    <form className="flex flex-col pb-40" onSubmit={handleSubmitForm}>
+    <form
+      className="flex flex-col pb-40"
+      onSubmit={handleSubmit(async ({ email, password }) => {
+        await signInMutationFn({ variables: { signData: { email, password } } })
+      })}
+    >
       <Controller
         name="email"
         control={control}
