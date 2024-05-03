@@ -4,10 +4,12 @@ import { useRouter } from 'next/navigation'
 import { MockedResponse } from '@apollo/client/testing'
 import { act, renderHook } from '@testing-library/react'
 
+import { toastify } from '@utils/toastify'
 import { GQL_SIGNUP } from '@gql/mutations/user'
 import { useHandleSignUp } from '@hooks/pages/cadastro'
 import { ApolloClientTestProvider } from '@utils/apollo-client-test-provider'
 
+jest.mock('@utils/toastify')
 jest.mock('next/navigation')
 
 const useRouterMock = useRouter as jest.Mock
@@ -45,5 +47,32 @@ describe('hook useHandleSignUp', () => {
     await act(async () => await result.current.signUpMutationFn())
 
     expect(fakePush).toHaveBeenCalledWith('/home')
+  })
+
+  it('shold render toast with error message if opataion of sign throws', async () => {
+    const fakeError = new Error('Error to sign')
+    const createUserError: MockedResponse = {
+      request: {
+        operationName: 'createUser',
+        query: GQL_SIGNUP,
+      },
+      error: fakeError,
+    }
+
+    const { result } = renderHook(useHandleSignUp, {
+      wrapper: ({ children }) => {
+        return (
+          <ApolloClientTestProvider mocks={[createUserError]}>
+            {children}
+          </ApolloClientTestProvider>
+        )
+      },
+    })
+
+    await act(() => result.current.signUpMutationFn())
+
+    expect(toastify).toHaveBeenCalledWith(fakeError.message, {
+      type: 'error',
+    })
   })
 })
