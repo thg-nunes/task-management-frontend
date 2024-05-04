@@ -1,5 +1,8 @@
 import { Logo } from '@components/logo'
 import { render, screen } from '@testing-library/react'
+import { twMerge } from 'tailwind-merge'
+
+jest.mock('tailwind-merge')
 
 describe('<Logo />', () => {
   it('should render image and text of logo', () => {
@@ -11,5 +14,11 @@ describe('<Logo />', () => {
       })
     ).toBeInTheDocument()
     expect(screen.getByText(/taskmgm/gi)).toBeInTheDocument()
+  })
+
+  it('should call twMerge function in className of icon with correct params', () => {
+    render(<Logo iconStyle="w-full" />)
+
+    expect(twMerge).toHaveBeenCalledWith('size-12', 'w-full')
   })
 })
