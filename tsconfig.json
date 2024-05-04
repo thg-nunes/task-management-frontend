@@ -24,6 +24,7 @@
       "@utils/*": ["./src/utils/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@gql/*": ["./src/gql/*"],
+      "@context/*": ["./src/context/*"],
       "@services/*": ["./src/services/*"]
     }
   },
