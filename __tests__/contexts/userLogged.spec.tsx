@@ -79,4 +79,16 @@ describe('<UserIsLogged />', () => {
     expect(Storage.prototype.getItem).toHaveBeenCalledWith('taskMgm@islogged')
     expect(useRouterMock().push).toHaveBeenCalledWith('/login')
   })
+
+  it('should redirect user to home page if taskMgm@islogged exists in localStorage', async () => {
+    jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('any_value')
+
+    render(
+      <UserIsLoggedProvider>
+        <Home />
+      </UserIsLoggedProvider>
+    )
+    expect(Storage.prototype.getItem).toHaveBeenCalledWith('taskMgm@islogged')
+    expect(useRouterMock().push).toHaveBeenCalledWith('/home')
+  })
 })
