@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation'
 import { useMutation } from '@apollo/client'
 
 import { GQL_SIGNOUT } from '@gql/mutations/user'
+import { toastify } from '@utils/toastify'
 
 /**
  * @function useSignOut - hook responsável por configurar a mutation de signOut
@@ -16,7 +17,11 @@ export const useSignOut = () => {
       localStorage.removeItem('taskMgm@islogged')
       push('/login')
     },
-    onError() {},
+    onError(error) {
+      toastify(error.message, {
+        type: 'error',
+      })
+    },
   })
 
   return { handlSignout }
