@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation'
 import { MockedResponse } from '@apollo/client/testing'
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
 
 import { toastify } from '@utils/toastify'
 import { GQL_SIGNIN } from '@gql/mutations/user'
