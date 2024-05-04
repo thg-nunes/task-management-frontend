@@ -1,6 +1,6 @@
 'use client'
 import React, { useContext } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 type UserIsLoggedContextProps = {
   isLogged: boolean
@@ -12,11 +12,12 @@ const UserIsLogged = React.createContext<UserIsLoggedContextProps>(
 )
 
 const UserIsLoggedProvider = ({ children }: { children: React.ReactNode }) => {
+  const { push } = useRouter()
   const pathname = usePathname()
   const [isLogged, setIsLogged] = React.useState(false)
 
   React.useEffect(() => {
-    localStorage.getItem('taskMgm@islogged')
+    if (!localStorage.getItem('taskMgm@islogged')) return push('/login')
   }, [pathname])
 
   return (
