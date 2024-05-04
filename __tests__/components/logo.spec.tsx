@@ -21,4 +21,10 @@ describe('<Logo />', () => {
 
     expect(twMerge).toHaveBeenCalledWith('size-12', 'w-full')
   })
+
+  it('should call twMerge function in className of logo paragraph with correct params', () => {
+    render(<Logo textStyle="h-max" />)
+
+    expect(twMerge).toHaveBeenCalledWith('text-xl', 'h-max')
+  })
 })
