@@ -18,6 +18,8 @@ const UserIsLoggedProvider = ({ children }: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     if (!localStorage.getItem('taskMgm@islogged')) return push('/login')
+
+    return push('/home')
   }, [pathname])
 
   return (
