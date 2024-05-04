@@ -22,8 +22,10 @@ describe('hook useHandleSignIn', () => {
       variableMatcher: () => true,
       result: {
         data: {
-          token: 'fake_token',
-          refresh_token: 'fake_refresh_token',
+          sign: {
+            token: 'fake_token',
+            refresh_token: 'fake_refresh_token',
+          },
         },
       },
     }
@@ -94,8 +96,10 @@ describe('hook useHandleSignIn', () => {
       variableMatcher: () => true,
       result: {
         data: {
-          token: 'fake_token',
-          refresh_token: 'fake_refresh_token',
+          sign: {
+            token: 'fake_token',
+            refresh_token: 'fake_refresh_token',
+          },
         },
       },
     }
