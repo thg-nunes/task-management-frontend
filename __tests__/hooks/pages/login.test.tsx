@@ -84,4 +84,37 @@ describe('hook useHandleSignIn', () => {
     expect(errors.email?.type).toBe('required')
     expect(errors.password?.type).toBe('required')
   })
+
+  it('should call localStorage.setItem if sign is completed no error', async () => {
+    const fakeQueryResponse: MockedResponse = {
+      request: {
+        query: GQL_SIGNIN,
+        operationName: 'sign',
+      },
+      variableMatcher: () => true,
+      result: {
+        data: {
+          token: 'fake_token',
+          refresh_token: 'fake_refresh_token',
+        },
+      },
+    }
+
+    const setItemSpy = jest.spyOn(Storage.prototype, 'setItem')
+
+    const fakePush = jest.fn()
+    useRouterMock.mockReturnValue({ push: fakePush })
+
+    const { result } = renderHook(() => useHandleSignIn(), {
+      wrapper: ({ children }) => (
+        <ApolloClientTestProvider mocks={[fakeQueryResponse]}>
+          {children}
+        </ApolloClientTestProvider>
+      ),
+    })
+
+    await act(() => result.current.signInMutationFn())
+
+    expect(setItemSpy).toHaveBeenCalledWith('taskMgm@islogged', 'fake_refresh_token')
+  })
 })
