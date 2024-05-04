@@ -6,7 +6,7 @@ import { act, renderHook } from '@testing-library/react'
 
 import { toastify } from '@utils/toastify'
 import { GQL_SIGNUP } from '@gql/mutations/user'
-import { useHandleSignUp } from '@hooks/pages/cadastro'
+import { useConfigSignUpForm, useHandleSignUp } from '@hooks/pages/cadastro'
 import { ApolloClientTestProvider } from '@utils/apollo-client-test-provider'
 
 jest.mock('@utils/toastify')
@@ -74,5 +74,32 @@ describe('hook useHandleSignUp', () => {
     expect(toastify).toHaveBeenCalledWith(fakeError.message, {
       type: 'error',
     })
+  })
+
+  it('ensures that the fields to register user is required to send form', async () => {
+    const { result } = renderHook(() => useConfigSignUpForm())
+
+    act(() => {
+      result.current.handleSubmit({
+        username: '',
+        password: '',
+        email: '',
+        passwordConfirmation: '',
+      } as any)
+    })
+
+    const { errors } = await result.current.control._executeSchema([
+      'username',
+      'password',
+      'email',
+      'passwordConfirmation',
+    ])
+
+    expect(errors.username?.message).toBe('O nome de usuário é obrigatório.')
+    expect(errors.email?.message).toBe('O email é obrigatório.')
+    expect(errors.password?.message).toBe('A senha é obrigatória.')
+    expect(errors.passwordConfirmation?.message).toBe(
+      'A confirmação de senha é obrigatória.'
+    )
   })
 })
