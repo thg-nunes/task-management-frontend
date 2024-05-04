@@ -21,7 +21,8 @@ const useHandleSignIn = () => {
   const { push } = useRouter()
 
   const [signInMutationFn, { loading }] = useMutation(GQL_SIGNIN, {
-    onCompleted() {
+    onCompleted(data) {
+      localStorage.setItem('taskMgm@islogged', data.refresh_token)
       push('/home')
     },
     onError(error) {
