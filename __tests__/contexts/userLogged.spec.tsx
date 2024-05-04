@@ -68,7 +68,7 @@ describe('<UserIsLogged />', () => {
     expect(result.current.setIsLogged).toBeTruthy()
   })
 
-  it('should redirect user to login page if isLogged value is equal false', async () => {
+  it('should redirect user to login page if taskMgm@islogged not exists in localStorage', async () => {
     jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(null)
 
     render(
@@ -76,7 +76,7 @@ describe('<UserIsLogged />', () => {
         <Home />
       </UserIsLoggedProvider>
     )
-
+    expect(Storage.prototype.getItem).toHaveBeenCalledWith('taskMgm@islogged')
     expect(useRouterMock().push).toHaveBeenCalledWith('/login')
   })
 })
