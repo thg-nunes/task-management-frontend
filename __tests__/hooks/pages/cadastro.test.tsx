@@ -15,7 +15,7 @@ jest.mock('next/navigation')
 const useRouterMock = useRouter as jest.Mock
 
 describe('hook useHandleSignUp', () => {
-  it('should redirect user to home page if sign is success', async () => {
+  it('should redirect user to home page if signUp is success', async () => {
     const createUser: MockedResponse = {
       request: {
         operationName: 'createUser',
@@ -49,7 +49,7 @@ describe('hook useHandleSignUp', () => {
     expect(fakePush).toHaveBeenCalledWith('/home')
   })
 
-  it('shold render toast with error message if opataion of sign throws', async () => {
+  it('shold render toast with error message if opataion of signUp throws', async () => {
     const fakeError = new Error('Error to sign')
     const createUserError: MockedResponse = {
       request: {
