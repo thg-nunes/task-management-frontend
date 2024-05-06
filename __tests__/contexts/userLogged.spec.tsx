@@ -1,94 +1,59 @@
-import React, { useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import { render, renderHook } from '@testing-library/react'
+import { useRouter } from 'next/navigation'
+import { render } from '@testing-library/react'
+import { signOut, useSession } from 'next-auth/react'
 
-import { UserIsLoggedProvider, useUserIsLogged } from '@context/userIsLogged'
-import Home from 'src/app/(pages)/(user_logged)/home/page'
+import { RenderPrivateRouter } from '@context/userIsLogged'
 
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useState: jest.fn(),
+jest.mock('next-auth/react', () => ({
+  useSession: jest.fn(),
+  signOut: jest.fn(),
 }))
-const useStateMock = useState as jest.Mock
+const useSessionMock = useSession as jest.Mock
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
   usePathname: jest.fn(),
 }))
 const useRouterMock = useRouter as jest.Mock
-const usePathnameMock = usePathname as jest.Mock
 
 describe('<UserIsLogged />', () => {
   beforeAll(() => {
     useRouterMock.mockReturnValue({ push: jest.fn() })
-
-    useStateMock.mockReturnValue([false, jest.fn()])
   })
 
-  it('should call getItem method of localStorage when UserIsLoggedProvider render', async () => {
-    const getItemSpy = jest.spyOn(Storage.prototype, 'getItem')
+  it('should call useSession method of next-auth when RenderPrivateRouter render', async () => {
+    useSessionMock.mockReturnValue({ status: 'unauthenticated' } as any)
 
     render(
-      <UserIsLoggedProvider>
+      <RenderPrivateRouter>
         <div>App</div>
-      </UserIsLoggedProvider>
+      </RenderPrivateRouter>
     )
 
-    expect(getItemSpy).toHaveBeenCalledWith('taskMgm@islogged')
+    expect(useSession).toHaveBeenCalled()
   })
 
-  it('should call getItem method of localStorage when pathname change', async () => {
-    usePathnameMock.mockReturnValue('/')
-
-    const getItemSpy = jest.spyOn(Storage.prototype, 'getItem')
-
-    const { rerender } = render(
-      <UserIsLoggedProvider>
-        <div>App</div>
-      </UserIsLoggedProvider>
-    )
-
-    usePathnameMock.mockReturnValue('/any_path')
-
-    rerender(
-      <UserIsLoggedProvider>
-        <div>App</div>
-      </UserIsLoggedProvider>
-    )
-
-    expect(getItemSpy.mock.calls.length).toBe(2)
-  })
-
-  it('should return isLogged value and function to change state value', async () => {
-    const { result } = renderHook(() => useUserIsLogged(), {
-      wrapper: ({ children }) => <UserIsLoggedProvider>{children}</UserIsLoggedProvider>,
-    })
-
-    expect(result.current.isLogged).toBe(false)
-    expect(result.current.setIsLogged).toBeTruthy()
-  })
-
-  it('should redirect user to login page if taskMgm@islogged not exists in localStorage', async () => {
-    jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(null)
+  it('should redirect user to login page if user is not unauthenticated', async () => {
+    useSessionMock.mockReturnValue({ status: 'unauthenticated' } as any)
 
     render(
-      <UserIsLoggedProvider>
-        <Home />
-      </UserIsLoggedProvider>
+      <RenderPrivateRouter>
+        <div>App</div>
+      </RenderPrivateRouter>
     )
-    expect(Storage.prototype.getItem).toHaveBeenCalledWith('taskMgm@islogged')
-    expect(useRouterMock().push).toHaveBeenCalledWith('/login')
+
+    expect(signOut).toHaveBeenCalledWith({ redirect: true, callbackUrl: '/login' })
   })
 
-  it('should redirect user to home page if taskMgm@islogged exists in localStorage', async () => {
-    jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('any_value')
+  it('should redirect user to home page if user is not authenticated', async () => {
+    useSessionMock.mockReturnValue({ status: 'authenticated' } as any)
 
     render(
-      <UserIsLoggedProvider>
-        <Home />
-      </UserIsLoggedProvider>
+      <RenderPrivateRouter>
+        <div>App</div>
+      </RenderPrivateRouter>
     )
-    expect(Storage.prototype.getItem).toHaveBeenCalledWith('taskMgm@islogged')
-    expect(useRouterMock().push).toHaveBeenCalledWith('/home')
+
+    expect(useRouterMock().push).toHaveBeenCalled()
   })
 })
