@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { useState } from 'react'
 import { PiSignIn } from 'react-icons/pi'
 import { Controller } from 'react-hook-form'
 
@@ -15,6 +16,7 @@ import { useRouter } from 'next/navigation'
  * apollo-client e validação dos campos do formulário.
  */
 export const SignInForm = (): JSX.Element => {
+  const [isLoading, setIsLoading] = useState(false)
   const { push } = useRouter()
   const { control, handleSubmit } = useConfigSignForm()
 
@@ -22,7 +24,9 @@ export const SignInForm = (): JSX.Element => {
     <form
       className="mx-auto flex flex-col pb-40 md:w-3/4 md:max-w-[514px] lg:pb-0"
       onSubmit={handleSubmit(async ({ email, password }) => {
+        setIsLoading(true)
         await handleSignIn({ email, password }, push)
+        setIsLoading(false)
       })}
     >
       <Controller
@@ -80,7 +84,7 @@ export const SignInForm = (): JSX.Element => {
         }}
       />
 
-      <Button className="mt-10" type="submit" isLoading={true}>
+      <Button className="mt-10" type="submit" isLoading={isLoading}>
         Sign
         <PiSignIn className="size-6" />
       </Button>
