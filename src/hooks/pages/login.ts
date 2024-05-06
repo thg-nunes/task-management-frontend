@@ -26,6 +26,10 @@ const handleSignIn = async (
   })
 
   if (response?.ok) push('/home')
+  if (response?.error)
+    toastify('Email ou senha icorreta.', {
+      type: 'error',
+    })
 }
 
 /**
