@@ -1,36 +1,23 @@
 'use client'
-import React, { useContext } from 'react'
+import React from 'react'
+import { signOut, useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 
-type UserIsLoggedContextProps = {
-  isLogged: boolean
-  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-const UserIsLogged = React.createContext<UserIsLoggedContextProps>(
-  {} as UserIsLoggedContextProps
-)
+const UserIsLogged = React.createContext({})
 
 const UserIsLoggedProvider = ({ children }: { children: React.ReactNode }) => {
   const { push } = useRouter()
   const pathname = usePathname()
-  const [isLogged, setIsLogged] = React.useState(false)
+  const session = useSession()
 
   React.useEffect(() => {
-    if (!localStorage.getItem('taskMgm@islogged')) return push('/login')
+    if (session.status === 'unauthenticated')
+      signOut({ redirect: true, callbackUrl: '/login' })
 
     return push('/home')
-  }, [pathname])
+  }, [pathname, session])
 
-  return (
-    <UserIsLogged.Provider value={{ isLogged, setIsLogged }}>
-      {children}
-    </UserIsLogged.Provider>
-  )
+  return <UserIsLogged.Provider value={{}}>{children}</UserIsLogged.Provider>
 }
 
-const useUserIsLogged = () => {
-  return useContext(UserIsLogged)
-}
-
-export { useUserIsLogged, UserIsLoggedProvider }
+export { UserIsLoggedProvider }
