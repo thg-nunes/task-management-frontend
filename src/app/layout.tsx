@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import { ToastContainer } from 'react-toastify'
 
+import { NextAuthSessionProvider } from '@providers/next-auth'
 import { ApolloContextProvider } from '@providers/apollo-provider'
 
 import './globals.css'
@@ -30,7 +31,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${inter.className} bg-gray-900`}>
-        <ApolloContextProvider>{children}</ApolloContextProvider>
+        <ApolloContextProvider>
+          <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+        </ApolloContextProvider>
         <ToastContainer />
       </body>
     </html>
