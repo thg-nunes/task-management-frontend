@@ -11,8 +11,9 @@ export const GQL_SIGNIN = gql`
   }
 
   fragment sign on SignResponse {
-    token
-    refresh_token
+    id
+    email
+    username
   }
 `
 
