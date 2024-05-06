@@ -1,49 +1,44 @@
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { MockedResponse } from '@apollo/client/testing'
-import { act, renderHook } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { toastify } from '@utils/toastify'
 import { GQL_SIGNIN } from '@gql/mutations/user'
 import { useConfigSignForm, useHandleSignIn } from '@hooks/pages/login'
 import { ApolloClientTestProvider } from '@utils/apollo-client-test-provider'
 
-jest.mock('@utils/toastify')
+jest.mock('next-auth/react')
+jest.mock('@utils/toastify', () => ({
+  signIn: jest.fn(),
+}))
+const signInMock = signIn as jest.Mock
 
 jest.mock('next/navigation')
 const useRouterMock = useRouter as jest.Mock
 
-describe('hook useHandleSignIn', () => {
+describe('hook handleSignIn', () => {
+  beforeAll(() => {
+    useRouterMock.mockReturnValue({ push: jest.fn() })
+  })
+
   it('should call push of useRouter if sign is success', async () => {
-    const fakeQueryResponse: MockedResponse = {
-      request: {
-        query: GQL_SIGNIN,
-        operationName: 'sign',
-      },
-      variableMatcher: () => true,
-      result: {
-        data: {
-          sign: {
-            token: 'fake_token',
-            refresh_token: 'fake_refresh_token',
-          },
-        },
-      },
+    const fakeSignData = {
+      email: 'fake@example.com',
+      password: '123456',
     }
 
-    const fakePush = jest.fn()
-    useRouterMock.mockReturnValue({ push: fakePush })
+    signInMock.mockResolvedValue({ ok: true })
 
-    const { result } = renderHook(() => useHandleSignIn(), {
-      wrapper: ({ children }) => (
-        <ApolloClientTestProvider mocks={[fakeQueryResponse]}>
-          {children}
-        </ApolloClientTestProvider>
-      ),
-    })
+    renderHook(() => handleSignIn(fakeSignData, useRouterMock().push))
 
-    await act(() => result.current.signInMutationFn())
-
-    expect(useRouterMock().push).toHaveBeenCalledWith('/home')
+    await waitFor(() =>
+      expect(signIn).toHaveBeenCalledWith('credentials', {
+        redirect: false,
+        ...fakeSignData,
+      })
+    )
+    await waitFor(() => expect(useRouterMock().push).toHaveBeenCalledWith('/home'))
   })
 
   it('should call toastify if sign fails', async () => {
