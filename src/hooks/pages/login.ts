@@ -5,34 +5,27 @@
 
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
-import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { GQL_SIGNIN } from '@gql/mutations/user'
 import { toastify } from '@utils/toastify'
+import { signIn } from 'next-auth/react'
 
 /**
+ * @async
  * @function useHandleSignIn - hook responsável por configurar a mutation de sign
  * @returns {Object} - o objeto de retorno contém a função responsável por fazer
  * a chamada ao apollo server e uma veriável para indicar se a chamada está em loading
  */
-const useHandleSignIn = () => {
-  const { push } = useRouter()
-
-  const [signInMutationFn, { loading }] = useMutation(GQL_SIGNIN, {
-    onCompleted({ sign }: { sign: { token: string; refresh_token: string } }) {
-      localStorage.setItem('taskMgm@islogged', sign.refresh_token)
-      push('/home')
-    },
-    onError(error) {
-      return toastify(error.message, {
-        type: 'error',
-      })
-    },
+const handleSignIn = async (
+  signData: { email: string; password: string },
+  push: (href: string) => void
+) => {
+  const response = await signIn('credentials', {
+    redirect: false,
+    ...signData,
   })
 
-  return { signInMutationFn, loading }
+  if (response?.ok) push('/home')
 }
 
 /**
@@ -69,4 +62,4 @@ const useConfigSignForm = () => {
   return { handleSubmit, control }
 }
 
-export { useHandleSignIn, useConfigSignForm }
+export { handleSignIn, useConfigSignForm }
