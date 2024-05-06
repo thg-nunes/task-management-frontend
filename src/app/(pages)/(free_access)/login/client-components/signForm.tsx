@@ -3,10 +3,11 @@ import Link from 'next/link'
 import { PiSignIn } from 'react-icons/pi'
 import { Controller } from 'react-hook-form'
 
-import { useConfigSignForm, useHandleSignIn } from '@hooks/pages/login'
+import { handleSignIn, useConfigSignForm } from '@hooks/pages/login'
 
 import { Button } from '@components/button'
 import { InputContainer, InputElement, InputLabel } from '@components/input'
+import { useRouter } from 'next/navigation'
 
 /**
  * @function SignInForm - função usada para criar e retornar um formulário com os inputs necessários
@@ -14,14 +15,14 @@ import { InputContainer, InputElement, InputLabel } from '@components/input'
  * apollo-client e validação dos campos do formulário.
  */
 export const SignInForm = (): JSX.Element => {
-  const { loading, signInMutationFn } = useHandleSignIn()
+  const { push } = useRouter()
   const { control, handleSubmit } = useConfigSignForm()
 
   return (
     <form
       className="mx-auto flex flex-col pb-40 md:w-3/4 md:max-w-[514px] lg:pb-0"
       onSubmit={handleSubmit(async ({ email, password }) => {
-        await signInMutationFn({ variables: { signData: { email, password } } })
+        await handleSignIn({ email, password }, push)
       })}
     >
       <Controller
@@ -79,7 +80,7 @@ export const SignInForm = (): JSX.Element => {
         }}
       />
 
-      <Button className="mt-10" type="submit" isLoading={loading}>
+      <Button className="mt-10" type="submit" isLoading={true}>
         Sign
         <PiSignIn className="size-6" />
       </Button>
