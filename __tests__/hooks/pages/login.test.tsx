@@ -1,12 +1,9 @@
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { MockedResponse } from '@apollo/client/testing'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { toastify } from '@utils/toastify'
-import { GQL_SIGNIN } from '@gql/mutations/user'
 import { useConfigSignForm, handleSignIn } from '@hooks/pages/login'
-import { ApolloClientTestProvider } from '@utils/apollo-client-test-provider'
 
 jest.mock('next-auth/react', () => ({
   signIn: jest.fn(),
@@ -74,39 +71,4 @@ describe('hook handleSignIn', () => {
     expect(errors.email?.type).toBe('required')
     expect(errors.password?.type).toBe('required')
   })
-
-  // it('should call localStorage.setItem if sign is completed no error', async () => {
-  //   const fakeQueryResponse: MockedResponse = {
-  //     request: {
-  //       query: GQL_SIGNIN,
-  //       operationName: 'sign',
-  //     },
-  //     variableMatcher: () => true,
-  //     result: {
-  //       data: {
-  //         sign: {
-  //           token: 'fake_token',
-  //           refresh_token: 'fake_refresh_token',
-  //         },
-  //       },
-  //     },
-  //   }
-
-  //   const setItemSpy = jest.spyOn(Storage.prototype, 'setItem')
-
-  //   const fakePush = jest.fn()
-  //   useRouterMock.mockReturnValue({ push: fakePush })
-
-  //   const { result } = renderHook(() => handleSignIn(), {
-  //     wrapper: ({ children }) => (
-  //       <ApolloClientTestProvider mocks={[fakeQueryResponse]}>
-  //         {children}
-  //       </ApolloClientTestProvider>
-  //     ),
-  //   })
-
-  //   await act(() => result.current.signInMutationFn())
-
-  //   expect(setItemSpy).toHaveBeenCalledWith('taskMgm@islogged', 'fake_refresh_token')
-  // })
 })
