@@ -4,9 +4,13 @@ import { gql } from '@apollo/client'
  * @namespace GQL_SIGNIN - mutation usada para fazer login no server
  */
 export const GQL_SIGNIN = gql`
-  mutation sign($signData: SignInput!) {
-    sign(signData: $signData) {
-      ...sign
+  mutation signIn($signData: SignInput!) {
+    signIn(signData: $signData) {
+      id
+      email
+      username
+      token
+      refresh_token
     }
   }
 
@@ -14,6 +18,8 @@ export const GQL_SIGNIN = gql`
     id
     email
     username
+    token
+    refresh_token
   }
 `
 
