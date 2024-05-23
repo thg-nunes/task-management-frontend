@@ -1,4 +1,5 @@
 'use client'
+import { signIn } from 'next-auth/react'
 import { PiSignIn } from 'react-icons/pi'
 import { Controller } from 'react-hook-form'
 
@@ -20,7 +21,15 @@ export const SignUpForm = (): JSX.Element => {
     <form
       className="mx-auto flex flex-col pb-40 md:w-3/4 md:max-w-[514px] lg:pb-0"
       onSubmit={handleSubmit(async ({ email, password, username }) => {
+        // faz cadastro da conta no banco de dados
         await signUpMutationFn({ variables: { userData: { email, username, password } } })
+
+        // cria a sessão com o next-auth
+        await signIn('credentials', {
+          redirect: false,
+          email,
+          password,
+        })
       })}
     >
       <Controller
