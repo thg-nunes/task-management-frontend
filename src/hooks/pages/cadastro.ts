@@ -20,7 +20,7 @@ import { toastify } from '@utils/toastify'
 const useHandleSignUp = () => {
   const { push } = useRouter()
 
-  const [signUpMutationFn, { data, loading }] = useMutation<{
+  const [signUpMutationFn, { loading }] = useMutation<{
     id: string
     username: string
     email: string

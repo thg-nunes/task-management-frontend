@@ -28,16 +28,14 @@ export const GQL_SIGNIN = gql`
  * usuário no server
  */
 export const GQL_SIGNUP = gql`
-  mutation create_account($userData: CreateUserInput!) {
-    createUser(userData: $userData) {
-      ...userCreated
+  mutation create_account($userData: CreateAccountInput!) {
+    createAccount(userData: $userData) {
+      ...user
     }
   }
 
-  fragment userCreated on User {
+  fragment user on User {
     id
-    username
-    email
   }
 `
 
