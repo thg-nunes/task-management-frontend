@@ -34,6 +34,16 @@ const SIGN_MUTATION = `
  */
 export const authOptions: NextAuthOptions = {
   pages: { signIn: '/login' },
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      if (url === '/login') {
+        cookies().delete('authToken')
+        cookies().delete('refresh_token')
+        return `${baseUrl}${url}`
+      }
+      return baseUrl
+    },
+  },
   providers: [
     CredentialsProvider({
       credentials: {
