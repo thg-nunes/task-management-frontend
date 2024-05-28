@@ -38,13 +38,3 @@ export const GQL_SIGNUP = gql`
     id
   }
 `
-
-/**
- * @namespace GQL_SIGNOUT - mutation usada para fazer deslogar o
- * usuário do server
- */
-export const GQL_SIGNOUT = gql`
-  mutation logout {
-    signOut
-  }
-`
