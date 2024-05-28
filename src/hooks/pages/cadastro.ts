@@ -5,7 +5,6 @@
 
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
 import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -18,16 +17,7 @@ import { toastify } from '@utils/toastify'
  * a chamada ao apollo server e uma veriável para indicar se a chamada está em loading
  */
 const useHandleSignUp = () => {
-  const { push } = useRouter()
-
-  const [signUpMutationFn, { loading }] = useMutation<{
-    id: string
-    username: string
-    email: string
-  }>(GQL_SIGNUP, {
-    onCompleted() {
-      push('/home')
-    },
+  const [signUpMutationFn, { loading }] = useMutation(GQL_SIGNUP, {
     onError(error) {
       return toastify(error.message, {
         type: 'error',

@@ -1,6 +1,7 @@
 'use client'
 import { signIn } from 'next-auth/react'
 import { PiSignIn } from 'react-icons/pi'
+import { useRouter } from 'next/navigation'
 import { Controller } from 'react-hook-form'
 
 import { useConfigSignUpForm, useHandleSignUp } from '@hooks/pages/cadastro'
@@ -14,6 +15,7 @@ import { InputContainer, InputElement, InputLabel } from '@components/input'
  * de hooks do apollo-client e validação dos campos do formulário.
  */
 export const SignUpForm = (): JSX.Element => {
+  const { push } = useRouter()
   const { loading, signUpMutationFn } = useHandleSignUp()
   const { control, handleSubmit } = useConfigSignUpForm()
 
@@ -22,7 +24,9 @@ export const SignUpForm = (): JSX.Element => {
       className="mx-auto flex flex-col pb-40 md:w-3/4 md:max-w-[514px] lg:pb-0"
       onSubmit={handleSubmit(async ({ email, password, username }) => {
         // faz cadastro da conta no banco de dados
-        await signUpMutationFn({ variables: { userData: { email, username, password } } })
+        await signUpMutationFn({
+          variables: { userData: { email, username, password } },
+        })
 
         // cria a sessão com o next-auth
         await signIn('credentials', {
@@ -30,6 +34,8 @@ export const SignUpForm = (): JSX.Element => {
           email,
           password,
         })
+
+        push('/home')
       })}
     >
       <Controller
