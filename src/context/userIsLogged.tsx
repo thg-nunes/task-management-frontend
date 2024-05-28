@@ -1,10 +1,9 @@
 'use client'
 import React from 'react'
+import { usePathname } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
-import { usePathname, useRouter } from 'next/navigation'
 
 const RenderPrivateRouter = ({ children }: { children: React.ReactNode }) => {
-  const { push } = useRouter()
   const pathname = usePathname()
   const session = useSession()
 
@@ -12,10 +11,10 @@ const RenderPrivateRouter = ({ children }: { children: React.ReactNode }) => {
     if (session.status === 'unauthenticated')
       signOut({ redirect: true, callbackUrl: '/login' })
 
-    return push('/home')
-  }, [pathname, session])
+    return () => {}
+  }, [session.status, pathname])
 
-  return <>{children}</>
+  return <>{session.status === 'authenticated' && children}</>
 }
 
 export { RenderPrivateRouter }
