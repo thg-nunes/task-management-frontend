@@ -25,6 +25,7 @@
       "@hooks/*": ["./src/hooks/*"],
       "@gql/*": ["./src/gql/*"],
       "@context/*": ["./src/context/*"],
+      "@pages/*": ["./src/app/(pages)/*"],
       "@services/*": ["./src/services/*"]
     }
   },
