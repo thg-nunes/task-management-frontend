@@ -24,11 +24,11 @@ export const Logo = ({
 }: LogoProps): JSX.Element => {
   return (
     <div
-      className={twMerge('mx-auto flex w-max items-center gap-3', className)}
+      className={twMerge('mx-auto flex w-max items-center gap md:gap-3', className)}
       {...rest}
     >
-      <FcSerialTasks className={twMerge('size-12', iconStyle)} />
-      <p className={twMerge('text-xl', textStyle)}>TaskMgm</p>
+      <FcSerialTasks className={twMerge('size-10 md:size-12', iconStyle)} />
+      <p className={twMerge('text-base lg:text-xl', textStyle)}>TaskMgm</p>
     </div>
   )
 }
