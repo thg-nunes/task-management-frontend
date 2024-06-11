@@ -18,6 +18,7 @@ export const requestToServerWithFetchApi = async <T>({
   const response = await fetch(`${process.env.NEXT_PUBLIC_APOLLO_SERVER_URI}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({
       query,
       variables,

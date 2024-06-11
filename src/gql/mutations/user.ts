@@ -4,9 +4,9 @@ import { gql } from '@apollo/client'
  * @namespace GQL_SIGNIN - mutation usada para fazer login no server
  */
 export const GQL_SIGNIN = gql`
-  mutation sign($signData: SignInput!) {
-    sign(signData: $signData) {
-      ...sign
+  mutation signIn($signData: SignInput!) {
+    signIn(signData: $signData) {
+      ...SignResponse
     }
   }
 
@@ -14,6 +14,8 @@ export const GQL_SIGNIN = gql`
     id
     email
     username
+    token
+    refresh_token
   }
 `
 
@@ -22,25 +24,32 @@ export const GQL_SIGNIN = gql`
  * usuário no server
  */
 export const GQL_SIGNUP = gql`
-  mutation create_account($userData: CreateUserInput!) {
-    createUser(userData: $userData) {
-      ...userCreated
+  mutation create_account($userData: CreateAccountInput!) {
+    createAccount(userData: $userData) {
+      ...user
     }
   }
 
-  fragment userCreated on User {
+  fragment user on User {
     id
-    username
-    email
   }
 `
 
 /**
- * @namespace GQL_SIGNOUT - mutation usada para fazer deslogar o
- * usuário do server
+ * @namespace GQL_GET_USER_PROFILE_DATA - mutation usada para fazer cadastro de
+ * usuário no server
  */
-export const GQL_SIGNOUT = gql`
-  mutation logout {
-    signOut
+export const GQL_GET_USER_PROFILE_DATA = gql`
+  query gqt_user($email: String!) {
+    getUser(email: $email) {
+      ...user
+    }
+  }
+
+  fragment user on User {
+    email
+    username
+    created_at
+    updated_at
   }
 `

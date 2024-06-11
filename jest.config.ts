@@ -8,7 +8,12 @@ const createJestConfig = nextJest({
 const config: Config = {
   clearMocks: true,
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!**/node_modules/**', '!src/gql/**'],
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!**/node_modules/**',
+    '!src/providers/**',
+    '!src/gql/**',
+  ],
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
   moduleNameMapper: {
@@ -17,6 +22,7 @@ const config: Config = {
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@context/(.*)$': '<rootDir>/src/context/$1',
     '^@providers/(.*)$': '<rootDir>/src/providers/$1',
+    '^@pages/(.*)$': '<rootDir>/src/app/(pages)/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 }
