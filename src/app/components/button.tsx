@@ -23,7 +23,7 @@ export const Button = ({
   return (
     <button
       className={twMerge(
-        'flex items-center justify-center gap-3 h-max rounded-md bg-violet-500 p-3 text-white transition-all duration-150 ease-linear hover:bg-violet-500/90 disabled:opacity-80 disabled:cursor-not-allowed',
+        'flex items-center justify-center gap-3 h-max rounded-md font-semibold bg-violet-500 p-3 text-white transition-all duration-150 ease-linear hover:bg-violet-500/90 disabled:opacity-80 disabled:cursor-not-allowed',
         className
       )}
       disabled={isLoading}
