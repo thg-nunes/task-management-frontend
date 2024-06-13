@@ -34,6 +34,7 @@ export const UserPhoto = ({ src }: UserPhotoProps): JSX.Element => {
           src={src}
           width={176}
           height={176}
+          className="min-h-[172px] min-w-[172px]"
           alt="foto do usuário ou imagem padrão caso nao tenha uma foto"
         />
       ) : (
