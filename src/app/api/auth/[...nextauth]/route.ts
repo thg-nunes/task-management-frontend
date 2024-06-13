@@ -35,6 +35,32 @@ const SIGN_MUTATION = `
 export const authOptions: NextAuthOptions = {
   pages: { signIn: '/login' },
   callbacks: {
+    async jwt({ user, token }) {
+      if (user) {
+        token.id = user.id
+        token.email = user.email
+        token.username = user.name
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (
+        typeof token.id === 'string' &&
+        typeof token.email === 'string' &&
+        typeof token.username === 'string'
+      ) {
+        session = {
+          ...session,
+          user: {
+            id: token.id,
+            email: token.email,
+            username: token.username,
+          },
+        }
+      }
+
+      return session
+    },
     async redirect({ url, baseUrl }) {
       if (url === '/login') {
         cookies().delete('authToken')
